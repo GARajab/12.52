@@ -135,3 +135,5 @@ To install the hook (run once after cloning):
 The hook runs `node scripts/syncPayloads.js` and commits changes to `payloads/payloads.json` automatically before a push completes. This keeps the repository's `payloads.json` in-sync with the repo state and prevents local watch-based updates from being reflected in the UI until you push.
 
 If you prefer not to use the hook, keep using `npm run sync:payloads` to update the JSON manually, or configure a CI action/server-side job to generate `payloads.json` at your preferred point in the deployment flow.
+
+Note: If you serve the files from your local machine while developing (`python -m http.server`), the served files will reflect the local working tree. That means even if you only commit `payloads.json` on push, local changes (if you run `sync:watch` or regenerate JSON) can be served locally. To ensure the UI doesn't reflect changes until after push, either avoid running local watch/automatic sync or serve from a remote host that mirrors the GitHub repository on push.
