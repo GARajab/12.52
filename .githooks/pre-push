@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# pre-push hook: generate payloads.json on push and commit it if changed
+set -e
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$REPO_ROOT"
+
+# Generate/update payloads json
+node "scripts/syncPayloads.js"
+
+# Stage updated payloads.json files if any
+# Check for both payloads/payloads.json and payloades/payloads.json
+UPDATED=false
+if git ls-files --error-unmatch payloads/payloads.json >/dev/null 2>&1; then
+  if ! git diff --quiet -- payloads/payloads.json; then
+    git add payloads/payloads.json
+    UPDATED=true
+  fi
+fi
+if [ -f payloades/payloads.json ]; then
+  # if file exists in payloades (typo folder), handle it too
+  if ! git diff --quiet -- payloades/payloads.json; then
+    git add payloades/payloads.json
+    UPDATED=true
+  fi
+fi
+
+if [ "$UPDATED" = true ]; then
+  git commit -m "chore(sync): update payloads.json" --no-verify || true
+fi
+
+# Allow push to proceed
+exit 0

@@ -67,27 +67,22 @@ If the POST succeeds, the UI shows success; otherwise it indicates that GoldHEN 
 
 ## Adding or updating payloads
 
-There are a few ways to add or update payloads; prefer the automated method:
+There are a few ways to add or update payloads (recommended: automatic):
 
-1. Add or copy the `.bin` payload to the `payloads/` folder (or leave it in `payloades/` if you haven't renamed it yet).
+1. Add or copy the `.bin` payload to the `payloads/` folder (or keep it in `payloades/` if you haven't renamed it yet).
 2. Update the generated JSON list manually or automatically:
     - Recommended (automatic): run the sync script to generate/update `payloads/payloads.json`:
-      - Recommended (automatic): run the sync script to generate/update `payloads/payloads.json`:
 
        ```bash
        npm run sync:payloads
        ```
 
-       Or keep the watcher running while you add/remove files:
+       This will update `payloads/payloads.json` in whichever folder exists (`payloads/` or `payloades/`). `loader.js` reads `payloads/payloads.json` first and will fall back to `payloads/list.txt` or the built-in `DEFAULT_PAYLOADS` in the absence of a JSON listing.
 
-       ```bash
-       npm run sync:watch
-       ```
+    - Manual fallback: if you prefer not to run the script, add the file name to `loader.js`'s `DEFAULT_PAYLOADS` (not recommended for frequent changes).
 
-      `loader.js` prefers `payloads/payloads.json` and will fall back to `payloads/list.txt` or a built-in default list if neither are present. `payloads.json` will be created in the actual directory detected (`payloads/` or the existing `payloades/`) to keep the folder name intact.
 Note: Node.js (v12+) is required to run the sync script; no additional dependencies are needed.
 
-    - Manual fallback: if you prefer not to run the script, add the file name to `loader.js`'s `DEFAULT_PAYLOADS` (or edit it to add a new entry). This is not recommended for frequent changes.
 
 ---
 
@@ -124,3 +119,19 @@ Thanks to the PS4 modding/homebrew community and to the authors of GoldHEN and t
 ## License
 
 No license file included. If you want a specific license added, please add a `LICENSE` or ask to have one added (MIT, GPL, etc.).
+
+---
+
+## 🔁 Update behavior and git hooks
+
+If you'd like your listed payloads to only update when you push to GitHub (so the UI won't show any local changes until they are pushed), install the local git hook that generates `payloads/payloads.json` and commits it automatically before pushing.
+
+To install the hook (run once after cloning):
+
+```bash
+./scripts/install-hooks.sh
+```
+
+The hook runs `node scripts/syncPayloads.js` and commits changes to `payloads/payloads.json` automatically before a push completes. This keeps the repository's `payloads.json` in-sync with the repo state and prevents local watch-based updates from being reflected in the UI until you push.
+
+If you prefer not to use the hook, keep using `npm run sync:payloads` to update the JSON manually, or configure a CI action/server-side job to generate `payloads.json` at your preferred point in the deployment flow.
