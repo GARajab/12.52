@@ -1,0 +1,12 @@
+{
+  "name": "ps4binrt",
+  "version": "0.1.0",
+  "description": "Static PS4 payload loader UI and payloads list synchronization",
+  "main": "loader.js",
+  "scripts": {
+    "sync:payloads": "node ./scripts/syncPayloads.js",
+    "sync:watch": "node ./scripts/syncPayloads.js --watch"
+  },
+  "author": "",
+  "license": "MIT"
+}

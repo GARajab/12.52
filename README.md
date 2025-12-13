@@ -67,12 +67,25 @@ If the POST succeeds, the UI shows success; otherwise it indicates that GoldHEN 
 
 ## Adding or updating payloads
 
-There are two places to update when adding a new payload:
+There are a few ways to add or update payloads; prefer the automated method:
 
-1. Add or copy the `.bin` payload to the `payloads/` folder.
-2. Update `loader.js` and add the file name into the `PAYLOADS` array so the loader will show the new payload file in the UI.
+1. Add or copy the `.bin` payload to the `payloads/` folder (or leave it in `payloades/` if you haven't renamed it yet).
+2. Update the generated JSON list manually or automatically:
+    - Recommended (automatic): run the sync script to generate/update `payloads/payloads.json`:
 
-(Advanced) If you'd like to avoid manually editing `loader.js`, you can extend the code to fetch `payloads/list.txt` and populate the list at runtime instead of hardcoding filenames.
+       ```bash
+       npm run sync:payloads
+       ```
+
+       Or keep the watcher running while you add/remove files:
+
+       ```bash
+       npm run sync:watch
+       ```
+
+       `loader.js` prefers `payloads/payloads.json` and will fall back to `payloads/list.txt` or a built-in default list if neither are present.
+
+    - Manual fallback: if you prefer not to run the script, add the file name to `loader.js`'s `DEFAULT_PAYLOADS` (or edit it to add a new entry). This is not recommended for frequent changes.
 
 ---
 
