@@ -72,6 +72,7 @@ There are a few ways to add or update payloads; prefer the automated method:
 1. Add or copy the `.bin` payload to the `payloads/` folder (or leave it in `payloades/` if you haven't renamed it yet).
 2. Update the generated JSON list manually or automatically:
     - Recommended (automatic): run the sync script to generate/update `payloads/payloads.json`:
+      - Recommended (automatic): run the sync script to generate/update `payloads/payloads.json`:
 
        ```bash
        npm run sync:payloads
@@ -83,7 +84,8 @@ There are a few ways to add or update payloads; prefer the automated method:
        npm run sync:watch
        ```
 
-       `loader.js` prefers `payloads/payloads.json` and will fall back to `payloads/list.txt` or a built-in default list if neither are present.
+      `loader.js` prefers `payloads/payloads.json` and will fall back to `payloads/list.txt` or a built-in default list if neither are present. `payloads.json` will be created in the actual directory detected (`payloads/` or the existing `payloades/`) to keep the folder name intact.
+Note: Node.js (v12+) is required to run the sync script; no additional dependencies are needed.
 
     - Manual fallback: if you prefer not to run the script, add the file name to `loader.js`'s `DEFAULT_PAYLOADS` (or edit it to add a new entry). This is not recommended for frequent changes.
 
