@@ -5,27 +5,79 @@
   <title>PS4 Payload Loader</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body {
-      background:#0e0e0e;
-      color:#00ff9c;
-      font-family:system-ui;
-      text-align:center;
+    :root{
+      --bg:#0b0b0f;
+      --accent:#00ff9c;
+      --muted:#7af7b8;
+      --card:#0f1113;
+      --glass: rgba(255,255,255,0.03);
     }
-    .payload {
-      border:1px solid #00ff9c;
-      padding:18px;
-      margin:12px auto;
-      max-width:400px;
-      cursor:pointer;
+    *{box-sizing:border-box}
+    body{
+      background: linear-gradient(180deg, var(--bg) 0%, #070708 100%);
+      color:var(--accent);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      margin:0; padding:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
     }
+    .app {
+      width:100%; max-width:980px; margin:48px; padding:28px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:12px; box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    }
+    header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px}
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo{width:56px; height:56px; display:inline-grid; place-items:center; background:linear-gradient(135deg,#00ff9c22,#00ff9c11); border-radius:10px; border:1px solid rgba(255,255,255,0.03)}
+    .title{font-size:1.25rem; font-weight:600; color:var(--accent)}
+    .subtitle{color:var(--muted); font-size:0.85rem}
+    .meta{font-size:0.9rem; color:var(--muted); display:flex; gap:12px; align-items:center}
+    #status{background:var(--glass); border:1px solid rgba(255,255,255,0.03); padding:8px 12px; border-radius:999px; color:var(--accent); min-width:120px; text-align:center}
+    main{display:grid; grid-template-columns: 1fr; grid-gap:16px}
+    .controls{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:8px}
+    #list{display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px}
+    .payload{background:var(--card); border-radius:10px; border:1px solid rgba(0,0,0,0.3); padding:16px; cursor:pointer; transition:transform .12s ease, box-shadow .12s ease; color:var(--accent); display:flex; align-items:center; gap:12px; min-height:64px}
+    .payload:hover{transform:translateY(-4px); box-shadow:0 8px 20px rgba(0,0,0,0.6)}
+    .payload .name{font-weight:600}
+    .payload .small{font-size:0.82rem; color:var(--muted)}
+    .footer{font-size:0.82rem; color:var(--muted); margin-top:12px; display:flex; justify-content:space-between; align-items:center}
+    @media (max-width:600px){ .app{margin:18px;padding:18px} .title{font-size:1rem} }
   </style>
 </head>
 <body>
 
-<h1>PS4 Payload Loader</h1>
-<div id="status">Waiting for GoldHEN…</div>
-<div id="list"></div>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden>
+        <!-- svg icon -->
+        <svg width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <path d="M6 4h12v2H6zM6 10h12v2H6zM6 16h12v2H6z" stroke="#00ff9c" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="title">PS4 Payload Loader</div>
+        <div class="subtitle">Lightweight browser-based payload sender for GoldHEN</div>
+      </div>
+    </div>
+    <div class="meta">
+      <div>Platform: <span id="platform">n/a</span></div>
+      <div>FW: <span id="fw">n/a</span></div>
+      <div id="status">Waiting for GoldHEN…</div>
+    </div>
+  </header>
 
+  <main>
+    <div class="controls">
+      <div class="subtitle">Select a payload to send via GoldHEN</div>
+      <div class="subtitle">Tip: ensure GoldHEN is running</div>
+    </div>
+    <div id="list"></div>
+  </main>
+
+  <div class="footer">
+    <div>Serving from local host — make sure PS4 can reach this host.</div>
+    <div>Built-in list fallback: <span class="small">DEFAULT</span></div>
+  </div>
+</div>
+
+<script src="info.js"></script>
 <script src="loader.js"></script>
 </body>
 </html>
