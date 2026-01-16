@@ -1,5 +1,5 @@
 // ================= CONFIG & DATA =================
-const BINLOADER_URL = "http://127.0.0.1:9090";
+const BINLOADER_URL = "https://127.0.0.1:9090";
 const PAYLOAD_DIR = "payloads/";
 
 
