@@ -2,6 +2,50 @@
 const BINLOADER_URL = "http://127.0.0.1:9090";
 const PAYLOAD_DIR = "payloads/";
 
+
+(function () {
+    var logBox;
+
+    function initConsole() {
+        logBox = document.getElementById('ps4-console');
+        if (!logBox) return;
+    }
+
+    function write(msg) {
+        if (!logBox) return;
+        var line = document.createElement('div');
+        line.textContent = msg;
+        logBox.appendChild(line);
+        logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    var oldLog = console.log;
+    console.log = function () {
+        var args = Array.prototype.slice.call(arguments)
+            .map(function (a) {
+                if (typeof a === 'object') {
+                    try { return JSON.stringify(a); }
+                    catch (e) { return '[object]'; }
+                }
+                return String(a);
+            })
+            .join(' ');
+
+        write(args);
+        oldLog.apply(console, arguments);
+    };
+
+    var oldErr = console.error;
+    console.error = function () {
+        write('[ERROR] ' + Array.prototype.join.call(arguments, ' '));
+        oldErr.apply(console, arguments);
+    };
+
+    window.addEventListener('load', initConsole);
+})();
+
+
+
 // Payload Data Structure
 const payloads = [
     // Keeping the original, alphabetical (or fixed) order here
@@ -83,6 +127,10 @@ async function injectPayload(fileName) {
         showToast("Injection failed. Check network (9090 port) or payload file.");
     }
 }
+
+console.log('Payload host loaded');
+console.log('Grid element:', document.getElementById('grid'));
+console.error('Something failed');
 
 // ================= HANDLERS =================
 function handleCardClick(clickedCard, payloadName) {
